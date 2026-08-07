@@ -9,6 +9,9 @@ on:
 jobs:
   lint-and-typecheck:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: "postgresql://user:pass@localhost:5432/db"
+      DIRECT_URL: "postgresql://user:pass@localhost:5432/db"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -17,5 +20,6 @@ jobs:
           cache: "npm"
       - run: npm ci
       - run: npm run lint
+      - run: npx prisma generate
       - run: npx next typegen
       - run: npx tsc --noEmit
