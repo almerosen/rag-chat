@@ -35,7 +35,9 @@ describe("retrieveRelevantChunks", () => {
   });
 
   afterAll(async () => {
-    await prisma.document.delete({ where: { id: documentId } });
+    if (documentId) {
+      await prisma.document.delete({ where: { id: documentId } });
+    }
   });
 
   it("returns relevant chunks for a query", async () => {
