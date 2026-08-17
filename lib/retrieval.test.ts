@@ -50,4 +50,18 @@ describe("retrieveRelevantChunks", () => {
     const results = await retrieveRelevantChunks("fotosyntes", 1);
     expect(results.length).toBeLessThanOrEqual(1);
   });
+
+  it("filters out irrelevant results below the similarity threshold", async () => {
+    const results = await retrieveRelevantChunks(
+      "Vad är bästa receptet på pannkakor?",
+      5,
+      0.5,
+    );
+    expect(results.length).toBe(0);
+  });
+
+  it("returns results when threshold is low enough", async () => {
+    const results = await retrieveRelevantChunks("Vad är klorofyll?", 5, 0.1);
+    expect(results.length).toBeGreaterThan(0);
+  });
 });
