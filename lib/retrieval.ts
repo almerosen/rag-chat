@@ -12,6 +12,7 @@ export interface RetrievedChunk {
 export async function retrieveRelevantChunks(
   query: string,
   limit = 5,
+  minSimilarity = 0.3,
 ): Promise<RetrievedChunk[]> {
   const queryEmbedding = await generateEmbedding(query);
   const vectorLiteral = `[${queryEmbedding.join(",")}]`;
@@ -26,6 +27,7 @@ export async function retrieveRelevantChunks(
     FROM "Chunk" c
     JOIN "Document" d ON d.id = c."documentId"
     WHERE c.embedding IS NOT NULL
+      AND 1 - (c.embedding <=> ${vectorLiteral}::vector) >= ${minSimilarity}
     ORDER BY c.embedding <=> ${vectorLiteral}::vector
     LIMIT ${limit}
   `;
