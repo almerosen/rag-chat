@@ -12,7 +12,7 @@ export interface RetrievedChunk {
 export async function retrieveRelevantChunks(
   query: string,
   limit = 5,
-  minSimilarity = 0.3,
+  minSimilarity = 0.5,
 ): Promise<RetrievedChunk[]> {
   const queryEmbedding = await generateEmbedding(query);
   const vectorLiteral = `[${queryEmbedding.join(",")}]`;
